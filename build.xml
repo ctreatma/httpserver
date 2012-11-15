@@ -1,0 +1,38 @@
+<project name="httpserver" basedir=".">
+	<property name="src" location="src" />
+	<property name="bin" location="bin" />
+	<property name="dist" location="dist" />
+	<property name="lib" location="lib" />
+
+	<target name="init">
+	    <!-- Create the time stamp -->
+	    <tstamp/>
+	    <!-- Create the build directory structure used by compile -->
+	    <mkdir dir="${bin}"/>
+	</target>
+	
+	<target name="compile" depends="init" description="compile the source " >
+	    <!-- Compile the java code from ${src} into ${build} -->
+	    <javac srcdir="${src}" destdir="${bin}">
+	    	<classpath>
+	    		<fileset dir="${lib}">
+	    			<include name="*.jar"/>
+	    			<include name="*.zip"/>
+	    		</fileset>
+	    	</classpath>
+	    </javac>
+	</target>
+
+	<target name="dist" depends="compile" description="generate the distribution" >
+	    <!-- Create the distribution directory -->
+	    <mkdir dir="${dist}"/>
+
+	    <!-- Put everything in ${bin} into the MyProject-${DSTAMP}.jar file -->
+	    <jar jarfile="${dist}/Httpserver.jar" basedir="${bin}">
+	        <manifest>
+	          <attribute name="Main-Class" value="edu.upenn.cis555.webserver.Httpserver" />
+	          <attribute name="Class-Path" value=". ${lib}${file.separator}servlet-api.jar" />
+	        </manifest>
+	    </jar>
+	</target>
+</project>
